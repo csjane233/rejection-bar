@@ -304,7 +304,9 @@
         e.style.transform=`rotate(${tilt+(Math.random()-0.5)*30}deg)`;
       },100);
       e.addEventListener('pointerdown',ev=>{
-        ev.preventDefault();ev.stopPropagation();
+        ev.preventDefault();
+        ev.stopPropagation();
+        if (navigator.vibrate) navigator.vibrate(100);
         const r=e.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
         const rnd=Math.random();
         if(rnd<0.03){
