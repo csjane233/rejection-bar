@@ -306,7 +306,7 @@
       e.addEventListener('pointerdown',ev=>{
         ev.preventDefault();
         ev.stopPropagation();
-        if (navigator.vibrate) navigator.vibrate(100);
+        // if (navigator.vibrate) navigator.vibrate(100);
         const r=e.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
         const rnd=Math.random();
         if(rnd<0.03){
