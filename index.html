@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>sweet transformation</title>
+  <style>
+    body {
+      margin:0;padding:0;
+      background:#fff;height:100vh;overflow:hidden;
+      font-family:'n2one',arial,sans-serif;cursor:default;
+    }
+    #rejectiontext {
+      position:fixed;top:20px;left:20px;right:20px;
+      color:#000;font-size:28px;font-weight:normal;
+      line-height:1.2;letter-spacing:1px;
+      word-wrap:break-word;pointer-events:none;
+      text-transform:lowercase;
+    }
+    .start-btn, .pause-btn {
+      position:fixed;top:24px;right:30px;
+      padding:4px 10px;font-size:24px;
+      border:3px solid #000;border-radius:8px;
+      background:#fff;color:#000;cursor:pointer;
+      transform:rotate(-1deg);transition:all .2s;
+      font-family:'n2one',sans-serif;
+      text-transform:lowercase;
+    }
+    .start-btn:hover, .pause-btn:hover {
+      background:#eee;transform:rotate(1deg) scale(1.05);
+    }
+    .envelope {
+      position:absolute;cursor:pointer;
+      transition:all .3s ease;z-index:100;
+    }
+    .envelope:hover {
+      transform:scale(1.1) rotate(5deg);
+    }
+    .envelope-svg {
+      width:100%;height:100%;
+      pointer-events:none;user-select:none;
+      filter:drop-shadow(2px 2px 4px rgb(255,0,0));
+    }
+    .bubble {
+      position:absolute;bottom:50px;
+      border:2px solid #000;background:rgba(255,255,255,1);
+      pointer-events:none;
+      animation:bubblefloat 8s ease-out forwards;
+    }
+    @keyframes bubblefloat {
+      0%   { transform:translateY(0) translateX(0);opacity:1; }
+      25%  { transform:translateY(-25vh) translateX(var(--drift-1));opacity:1; }
+      50%  { transform:translateY(-50vh) translateX(var(--drift-2));opacity:1; }
+      75%  { transform:translateY(-75vh) translateX(var(--drift-3));opacity:1; }
+      100% { transform:scale(1.5) translateY(-100vh) translateX(var(--drift-4));opacity:0; }
+    }
+    .drink-row {
+      position:fixed;bottom:10px;left:0;right:0;
+      display:flex;justify-content:space-between;
+      align-items:flex-end;padding:0 20px;
+      pointer-events:none;z-index:1001;
+    }
+    .drink {
+      transform:rotate(calc((var(--i)*2deg - 5deg)));
+      transition:transform 0.3s ease;
+    }
+    .drink.shooting {
+      transform:rotate(calc((var(--i)*2deg - 5deg))) scale(1.2);
+      animation:bottleshake 0.5s ease-in-out infinite;
+    }
+    @keyframes bottleshake {
+      0%, 100% { transform:rotate(calc((var(--i)*2deg - 5deg))) scale(1.2); }
+      50% { transform:rotate(calc((var(--i)*2deg - 5deg + 3deg))) scale(1.25); }
+    }
+    .handdrawn-confetti {
+      position:absolute;pointer-events:none;
+      font-size:16px;z-index:2000;
+      animation:confettihandfall 4s ease-in forwards;
+      font-weight:bold;
+    }
+    .bottle-confetti {
+      position:absolute;pointer-events:none;
+      font-size:12px;z-index:2001;
+      animation:bottleconfettifall 3s ease-out forwards;
+      font-weight:bold;
+    }
+    @keyframes confettihandfall {
+      0%   { transform:translateY(-50px) rotate(0deg);opacity:1; }
+      100% { transform:translateY(100vh) rotate(720deg);opacity:0.8; }
+    }
+    @keyframes bottleconfettifall {
+      0%   { transform:translateY(0) rotate(0deg);opacity:1; }
+      100% { transform:translateY(100vh) rotate(360deg);opacity:0; }
+    }
+    .bomb {
+      position:absolute;z-index:200;pointer-events:none;
+    }
+    .bomb-body {
+      position:absolute;top:10px;left:50%;
+      transform:translateX(-50%);
+      width:30px;height:30px;
+      border:3px solid #000;border-radius:50%;
+      background:#000;
+    }
+    .bomb-fuse {
+      position:absolute;top:5px;left:50%;
+      transform:translateX(-50%) rotate(-30deg);
+      width:3px;height:15px;background:#ff0000;
+      border-radius:2px;
+    }
+    .bomb-spark {
+      position:absolute;top:0;left:50%;
+      transform:translateX(-50%);
+      width:5px;height:5px;
+      border:2px solid #000;border-radius:50%;
+      background:transparent;
+      animation:sparkle .5s infinite alternate;
+    }
+    @keyframes sparkle {
+      to { transform:scale(1.5);opacity:0; }
+    }
+    .bomb-explosion {
+      animation:explode .8s ease-out forwards;
+    }
+    @keyframes explode {
+      0%   { transform:scale(1) rotate(0deg);opacity:1; }
+      25%  { transform:scale(var(--explosion-scale-1,1.8)) rotate(180deg);opacity:0.9; }
+      50%  { transform:scale(var(--explosion-scale-2,2.5)) rotate(450deg);opacity:0.7; }
+      75%  { transform:scale(var(--explosion-scale-3,3.5)) rotate(720deg);opacity:0.4; }
+      100% { transform:scale(var(--explosion-scale-4,5)) rotate(1080deg);opacity:0; }
+    }
+    .envelope-vanish {
+      animation:vanishinward .8s ease-in forwards;
+    }
+    @keyframes vanishinward {
+      to { transform:scale(0.1) rotate(180deg);opacity:0; }
+    }
+    .lollipop-stick, .lollipop-candy {
+      position:absolute;pointer-events:none;
+    }
+    .lollipop-stick {
+      bottom:0;left:50%;transform:translateX(-50%) rotate(2deg);
+      width:3px;height:40px;background:#000;border-radius:2px;
+    }
+    .lollipop-candy {
+      top:0;left:50%;transform:translateX(-50%);
+      width:25px;height:25px;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-size:20px;color:#000;background:transparent;
+      animation:popeffect .8s ease-out forwards;
+    }
+    @keyframes popeffect {
+      50%  { transform:scale(1.3) rotate(180deg);opacity:1; }
+      100% { transform:scale(1) rotate(360deg); }
+    }
+    .float-away {
+      animation:floataway 3s ease-out forwards;
+    }
+    @keyframes floataway {
+      to { transform:translateY(-200px) rotate(720deg);opacity:0; }
+    }
+    .ending-envelope {
+      position:fixed;
+      left:50%;top:50%;
+      transform:translate(-50%, -50%);
+      z-index:3000;
+      animation:envelopetransform 2s ease-in-out forwards;
+    }
+    @keyframes envelopetransform {
+      0% { transform:translate(-50%, -50%) scale(1); }
+      50% { transform:translate(-50%, -50%) scale(1.5) rotate(360deg); }
+      100% { transform:translate(-50%, -50%) scale(0); }
+    }
+    .ending-lollipop {
+      position:fixed;
+      left:50%;top:50%;
+      transform:translate(-50%, -50%);
+      z-index:3001;
+      font-size:60px;
+      animation:lollipopappear 1s ease-out forwards;
+      animation-delay:1.5s;
+      opacity:0;
+    }
+    @keyframes lollipopappear {
+      0% { opacity:0; transform:translate(-50%, -50%) scale(0) rotate(0deg); }
+      50% { opacity:1; transform:translate(-50%, -50%) scale(1.5) rotate(180deg); }
+      100% { opacity:1; transform:translate(-50%, -50%) scale(1) rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div id="rejectiontext">at the bar serving rejection</div>
+  <button class="start-btn" id="startbtn">start</button>
+  <button class="pause-btn" id="pausebtn" style="display:none">pause</button>
+  <div class="drink-row" id="drinksrow">
+    <div class="drink" id="glass1" style="--i:0"><svg width="35" height="65"><path d="M6 12 Q7 11 8 12 L10 11 Q12 10 14 11 L16 10 Q18 9 20 10 L22 11 Q24 10 26 11 L28 12 Q29 11 30 12 L27 52 Q26 54 24 53 L22 54 Q20 55 18 54 L16 53 Q14 54 12 53 L10 54 Q8 53 6 52 Z" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="wine1" style="--i:1"><svg width="32" height="65"><path d="M16 25 Q4 24 5 35 Q4 40 8 42 Q12 44 16 43 Q20 44 24 42 Q28 40 27 35 Q28 24 16 25 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M15 43 Q16 42 17 43 L16 58 Q15 60 17 59 L15 60" fill="none" stroke="#000" stroke-width="2"/><path d="M11 58 Q13 59 15 58 Q17 57 19 58 Q21 59 23 58" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="beer1" style="--i:2"><svg width="38" height="65"><path d="M9 16 Q10 15 11 16 Q13 14 15 16 Q17 15 19 16 Q21 14 23 16 Q25 15 27 16 L26 47 Q25 49 23 48 Q21 49 19 48 Q17 49 15 48 Q13 47 11 48 Q9 49 10 47 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M13 10 Q14 8 15 10 Q17 9 19 10 Q21 8 22 10 L21 16 Q20 17 19 16 Q17 17 15 16 Q14 17 14 16 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M27 23 Q30 22 32 25 Q33 28 32 31 Q30 34 27 33" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="bottle1" style="--i:3"><svg width="28" height="65"><path d="M10 6 Q11 5 12 6 Q13 4 15 6 Q16 5 17 6 L16 14 Q17 15 18 14 Q19 13 20 14 Q21 15 20 16 L19 50 Q18 52 16 51 Q14 52 12 51 Q10 52 9 50 L8 16 Q7 15 8 14 Q9 13 10 14 Q11 15 12 14 Z" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="cocktail1" style="--i:4"><svg width="35" height="65"><path d="M5 15 Q6 14 7 15 Q12 13 17 15 Q22 13 27 15 Q28 14 29 15 L18 35 Q17 36 16 35 Q15 36 14 35 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M16 35 Q17 34 18 35 L17 58 Q16 60 18 59 L16 60" fill="none" stroke="#000" stroke-width="2"/><path d="M13 58 Q15 59 17 58 Q19 57 21 58" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="glass2" style="--i:5"><svg width="35" height="65"><path d="M7 13 Q8 12 9 13 L11 12 Q13 11 15 12 L17 11 Q19 10 21 11 L23 12 Q25 11 27 12 L29 13 Q30 12 31 13 L28 53 Q27 55 25 54 L23 55 Q21 56 19 55 L17 54 Q15 55 13 54 L11 55 Q9 54 7 53 Z" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="wine2" style="--i:6"><svg width="32" height="65"><path d="M16 22 Q3 21 4 32 Q3 37 7 39 Q11 41 16 40 Q21 41 25 39 Q29 37 28 32 Q29 21 16 22 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M15 40 Q16 39 17 40 L16 55 Q15 57 17 56 L15 57" fill="none" stroke="#000" stroke-width="2"/><path d="M11 55 Q13 56 15 55 Q17 54 19 55 Q21 56 23 55" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="beer2" style="--i:7"><svg width="38" height="65"><path d="M8 17 Q9 16 10 17 Q12 15 14 17 Q16 16 18 17 Q20 15 22 17 Q24 16 26 17 L25 48 Q24 50 22 49 Q20 50 18 49 Q16 50 14 49 Q12 48 10 49 Q8 50 9 48 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M12 11 Q13 9 14 11 Q16 10 18 11 Q20 9 21 11 L20 17 Q19 18 18 17 Q16 18 14 17 Q13 18 13 17 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M26 24 Q29 23 31 26 Q32 29 31 32 Q29 35 26 34" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="bottle2" style="--i:8"><svg width="28" height="65"><path d="M9 7 Q10 6 11 7 Q12 5 14 7 Q15 6 16 7 L15 15 Q16 16 17 15 Q18 14 19 15 Q20 16 19 17 L18 51 Q17 53 15 52 Q13 53 11 52 Q9 53 8 51 L7 17 Q6 16 7 15 Q8 14 9 15 Q10 16 11 15 Z" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+  </div>
+  <script>
+    let bombGhostCount = 0;
+    let running=false, paused=false, spawnEnv, spawnBub, gameEnded=false;
+    const envelopeShapes=[{w:85,h:55},{w:70,h:70},{w:105,h:45},{w:45,h:85},{w:55,h:40},{w:95,h:70}];
+
+    function randomBorderRadius(){
+        const corners = Array.from({length: 4}, () => (Math.random() * 60 + 20).toFixed(0) + '%');
+        return `${corners.join(' ')} / ${corners.map(v => (Math.random() * 60 + 20).toFixed(0) + '%').join(' ')}`;
+    }
+
+    function playSound(type){
+      const ac=new (AudioContext||webkitAudioContext)(), o=ac.createOscillator(), g=ac.createGain();
+      o.connect(g).connect(ac.destination);
+      if(type==='bomb'){
+        o.type='triangle'; o.frequency.setValueAtTime(300,ac.currentTime);
+        o.frequency.linearRampToValueAtTime(50,ac.currentTime+0.4);
+        g.gain.setValueAtTime(0.4,ac.currentTime); g.gain.linearRampToValueAtTime(0.001,ac.currentTime+0.5);
+      }
+      if(type==='pop'){
+        o.type='sine'; o.frequency.setValueAtTime(800,ac.currentTime);
+        o.frequency.exponentialRampToValueAtTime(1600,ac.currentTime+0.08);
+        g.gain.setValueAtTime(0.2,ac.currentTime); g.gain.linearRampToValueAtTime(0.0001,ac.currentTime+0.15);
+      }
+      o.start(); o.stop(ac.currentTime + (type==='bomb'?0.5:0.16));
+    }
+
+    function updateRejection(addType){
+      const el=document.getElementById('rejectiontext'), txt=el.textContent;
+      if(addType==='add_re' && txt.includes('rejection')){
+        el.textContent=txt.replace('rejection','rerejection');
+      } else if(addType==='add_n'){
+        el.textContent=txt+'n';
+      }
+    }
+
+    function spawnBubble(id){
+      if(!running||paused||gameEnded) return;
+      const d=document.getElementById(id).getBoundingClientRect();
+      const b=document.createElement('div'); b.className='bubble';
+      const size=3+Math.random()*15;
+      b.style.width=b.style.height=size+'px';
+      
+      // Random horizontal drift values for each phase of the animation
+      const drift1 = (Math.random() - 0.5) * 200;
+      const drift2 = (Math.random() - 0.5) * 300;
+      const drift3 = (Math.random() - 0.5) * 250;
+      const drift4 = (Math.random() - 0.5) * 350;
+      
+      b.style.setProperty('--drift-1', drift1 + 'px');
+      b.style.setProperty('--drift-2', drift2 + 'px');
+      b.style.setProperty('--drift-3', drift3 + 'px');
+      b.style.setProperty('--drift-4', drift4 + 'px');
+      
+      b.style.left=(d.left+d.width/2+(Math.random()-0.5)*d.width*0.9)+'px';
+      b.style.borderRadius=randomBorderRadius();
+      document.body.appendChild(b);
+      setTimeout(()=>{ b.remove() },9000);
+    }
+
+    function spawnBubbles(){
+      if(!running||paused||gameEnded) return;
+      ['glass1','wine1','beer1','bottle1','cocktail1','glass2','wine2','beer2','bottle2']
+        .forEach(id=>{ if(Math.random()<0.7) spawnBubble(id) });
+      spawnBub=setTimeout(spawnBubbles,350+Math.random()*700);
+    }
+
+    function spawnEnvelopes(){
+      if(!running||paused||gameEnded) return;
+      createEnvelope();
+      spawnEnv=setTimeout(spawnEnvelopes,1200+Math.random()*2500);
+    }
+
+    function createEnvelope(){
+      if(!running||paused||gameEnded) return;
+      const e=document.createElement('div'); e.className='envelope';
+      const {w,h}=envelopeShapes[Math.floor(Math.random()*envelopeShapes.length)];
+      e.style.width=w+'px'; e.style.height=h+'px';
+      e.style.left=Math.random()*(innerWidth-w)+'px'; e.style.top='-100px';
+      const tilt=(Math.random()-0.5)*20;
+      e.style.transform=`rotate(${tilt}deg)`;
+      const sw=2+Math.floor(Math.random()*2);
+      const wob1=Array.from({length:8},()=>((Math.random()-0.5)*3)),
+            wob2=Array.from({length:8},()=>((Math.random()-0.5)*2));
+      e.innerHTML=`
+        <svg class="envelope-svg" width="${w}" height="${h}">
+          <path d="M${2+wob1[0]} ${2+wob1[1]} Q${w/4+wob1[2]} ${1+wob1[3]} ${w/2+wob1[4]} ${2+wob1[5]} Q${3*w/4+wob1[6]} ${1+wob1[7]} ${w-2+wob2[0]} ${2+wob2[1]} Q${w-1+wob2[2]} ${h/4+wob2[3]} ${w-2+wob2[4]} ${h/2+wob2[5]} Q${w-1+wob2[6]} ${3*h/4+wob2[7]} ${w-2+wob1[0]} ${h-2+wob1[1]} Q${3*w/4+wob1[2]} ${h-1+wob1[3]} ${w/2+wob1[4]} ${h-2+wob1[5]} Q${w/4+wob1[6]} ${h-1+wob1[7]} ${2+wob2[0]} ${h-2+wob2[1]} Q${1+wob2[2]} ${3*h/4+wob2[3]} ${2+wob2[4]} ${h/2+wob2[5]} Q${1+wob2[6]} ${h/4+wob2[7]} ${2+wob1[0]} ${2+wob1[1]} Z" fill="none" stroke="#000" stroke-width="${sw}"/>
+          <path d="M${2+wob1[0]} ${2+wob1[1]} Q${w/2+wob1[2]} ${h*0.4+wob1[3]} ${w-2+wob1[4]} ${2+wob1[5]}" fill="none" stroke="#000" stroke-width="${sw}"/>
+        </svg>`;
+      document.body.appendChild(e);
+      const speed=3+Math.random()*2, drift=(Math.random()-0.5)*150;
+      e.style.transition=`all ${speed}s ease-in-out`;
+      setTimeout(()=>{
+        e.style.top=innerHeight+100+'px';
+        e.style.left=(parseFloat(e.style.left)+drift)+'px';
+        e.style.transform=`rotate(${tilt+(Math.random()-0.5)*30}deg)`;
+      },100);
+      e.addEventListener('pointerdown',ev=>{
+        ev.preventDefault();ev.stopPropagation();
+        const r=e.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+        const rnd=Math.random();
+        if(rnd<0.03){
+            clearTimeout(spawnEnv);
+            clearTimeout(spawnBub);
+            running = false;
+            document.querySelectorAll('.envelope').forEach(env => env.remove());
+            createLollipop(cx - 12, cy - 12);
+        } else if(rnd<0.55){
+          createBomb(cx-15,cy-15);
+          bombGhostCount++;
+          e.remove();
+        } else {
+          e.classList.add('envelope-vanish');
+          setTimeout(()=>e.remove(),800);
+          bombGhostCount++;
+        //   playSound('bomb');
+          updateRejection('add_n');
+        }
+      });
+      setTimeout(()=>e.remove(),(speed+1)*1000);
+    }
+
+    function createBomb(x,y){
+      const b=document.createElement('div');b.className='bomb';
+      b.style.left=x+'px';b.style.top=y+'px';
+      const fuseRot=-30+(Math.random()-0.5)*20, sparkOff=(Math.random()-0.5)*6;
+      b.innerHTML=`
+        <div class="bomb-body"></div>
+        <div class="bomb-fuse" style="transform:translateX(-50%) rotate(${fuseRot}deg)"></div>
+        <div class="bomb-spark" style="left:calc(50%+${sparkOff}px)"></div>`;
+      document.body.appendChild(b);
+      setTimeout(()=>{
+        b.style.setProperty('--explosion-scale-1',1.5+Math.random()*0.8);
+        b.style.setProperty('--explosion-scale-2',2.0+Math.random()*1.0);
+        b.style.setProperty('--explosion-scale-3',2.8+Math.random()*1.4);
+        b.style.setProperty('--explosion-scale-4',4.0+Math.random()*2.0);
+        b.classList.add('bomb-explosion');
+        playSound('bomb');
+      },300);
+      setTimeout(()=>b.remove(),1100);
+      updateRejection('add_re');
+    }
+
+    function createLollipop(x,y){
+      const l=document.createElement('div');l.className='envelope';
+      l.style.left=x+'px';l.style.top=y+'px';
+    //   l.innerHTML='<div class="lollipop-candy">🍭</div><div class="lollipop-stick"></div>';
+      document.body.appendChild(l);
+      setTimeout(()=>l.querySelector('.lollipop-candy').classList.add('float-away'),1000);
+      setTimeout(()=>l.remove(),4000);
+      playSound('pop');
+      setTimeout(endGame,500);
+    }
+
+    function spawnBottleConfetti(drinkId) {
+      const drink = document.getElementById(drinkId);
+      const rect = drink.getBoundingClientRect();
+      const shapes = ['●', '■', '▲', '♦', '★', '✦', '◆', '▼', '♠', '♣', '♥', '♪'];
+      const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#feca57', '#ff9ff3', '#54a0ff', '#5f27cd', '#00d2d3', '#ff9f43', '#10ac84', '#ee5a24'];
+      
+      for(let i = 0; i < 30; i++) {
+        const confetti = document.createElement('div');
+        confetti.className = 'bottle-confetti';
+        confetti.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+        confetti.style.left = (rect.left + rect.width/2 + (Math.random() - 0.5) * 40) + 'px';
+        confetti.style.top = rect.top + 'px';
+        confetti.style.color = colors[Math.floor(Math.random() * colors.length)];
+        confetti.style.animationDelay = Math.random() * 0.5 + 's';
+        confetti.style.animationDuration = (2 + Math.random() * 2) + 's';
+        document.body.appendChild(confetti);
+        setTimeout(() => confetti.remove(), 4000);
+      }
+    }
+
+    function spawnHanddrawnConfetti(){
+      const shapes=['✧','✦','※','✱','❀','❁','❂','❃','❅','❆','❇','❈','❉','❊','❋'];
+      const colors=['#e74c3c','#3498db','#f1c40f','#2ecc71','#9b59b6','#e67e22','#1abc9c'];
+      for(let i=0;i<100;i++){
+        const c=document.createElement('div');c.className='handdrawn-confetti';
+        c.textContent=shapes[Math.floor(Math.random()*shapes.length)];
+        c.style.left=Math.random()*innerWidth+'px';
+        c.style.animationDelay=Math.random()*2+'s';
+        c.style.animationDuration=(3+Math.random()*2)+'s';
+        c.style.color=colors[Math.floor(Math.random()*colors.length)];
+        document.body.appendChild(c);
+        setTimeout(()=>c.remove(),6000);
+      }
+    }
+
+    function endGame(){
+      gameEnded=true;
+      clearTimeout(spawnEnv);
+      clearTimeout(spawnBub);
+
+      const n = bombGhostCount || 1;
+      document.getElementById('rejectiontext').textContent = 'yes'.repeat(n);
+      
+      // Create ending envelope
+      const endEnvelope = document.createElement('div');
+      endEnvelope.className = 'ending-envelope';
+      endEnvelope.innerHTML = `
+        <svg width="100" height="65">
+          <path d="M5 5 Q25 4 50 5 Q75 4 95 5 Q94 20 95 32.5 Q94 45 95 60 Q75 59 50 60 Q25 59 5 60 Q4 45 5 32.5 Q4 20 5 5 Z" fill="none" stroke="#000" stroke-width="3"/>
+          <path d="M5 5 Q50 35 95 5" fill="none" stroke="#000" stroke-width="3"/>
+        </svg>`;
+      document.body.appendChild(endEnvelope);
+      
+      // Create ending lollipop
+      const endLollipop = document.createElement('div');
+      endLollipop.className = 'ending-lollipop';
+      endLollipop.textContent = '🍭';
+      document.body.appendChild(endLollipop);
+      
+      // Start bottle shooting sequence
+      const drinkIds = ['glass1','wine1','beer1','bottle1','cocktail1','glass2','wine2','beer2','bottle2'];
+      
+      // Add shooting class to all bottles
+      setTimeout(() => {
+        drinkIds.forEach(id => {
+          document.getElementById(id).classList.add('shooting');
+        });
+      }, 2000);
+      
+      // Staggered confetti shooting from each bottle
+      drinkIds.forEach((id, index) => {
+        setTimeout(() => {
+          spawnBottleConfetti(id);
+        }, 2500 + index * 200);
+      });
+      
+      // Additional waves of confetti
+      setTimeout(() => {
+        drinkIds.forEach(id => spawnBottleConfetti(id));
+      }, 4500);
+      
+      setTimeout(() => {
+        drinkIds.forEach(id => spawnBottleConfetti(id));
+      }, 5500);
+      
+      // Final cleanup and reset
+      setTimeout(()=>{
+        // Remove ending elements
+        endEnvelope.remove();
+        endLollipop.remove();
+        
+        // Remove shooting class from bottles
+        drinkIds.forEach(id => {
+          document.getElementById(id).classList.remove('shooting');
+        });
+        
+        // Reset game state
+        gameEnded=false;running=false;
+        document.getElementById('startbtn').style.display='';
+        document.getElementById('pausebtn').style.display='none';
+        document.getElementById('rejectiontext').textContent='at the bar serving rejection';
+      }, 8000);
+    }
+
+    document.getElementById('startbtn').onclick=()=>{
+      if(running){
+        paused?(paused=false,spawnEnvelopes(),spawnBubbles(),document.getElementById('pausebtn').style.display=''):null;
+      } else{
+        running=true;paused=false;
+        document.getElementById('startbtn').style.display='none';
+        document.getElementById('pausebtn').style.display='';
+        spawnEnvelopes();spawnBubbles();
+      }
+    };
+    document.getElementById('pausebtn').onclick=()=>{
+      paused=true;clearTimeout(spawnEnv);clearTimeout(spawnBub);
+      document.getElementById('startbtn').style.display='';
+      document.getElementById('pausebtn').style.display='none';
+    };
+  </script>
+</body>
+</html>
