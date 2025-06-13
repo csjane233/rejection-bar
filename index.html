@@ -11,7 +11,7 @@
     }
     body {
       margin:0;padding:0;
-      background:#fff;height:100vh;overflow:hidden;
+      background: #d4d4d4;;height:100vh;overflow:hidden;
       font-family:'n2one','Comic Sans',sans-serif;cursor:default;
     }
     #rejectiontext {
@@ -25,7 +25,8 @@
       position:fixed;top:24px;right:30px;
       padding:4px 10px;font-size:24px;
       border:3px solid #000;border-radius:8px;
-      background:#fff;color:#000;cursor:pointer;
+      background:#fff;
+      color:#000;cursor:pointer;
       transform:rotate(-1deg);transition:all .2s;
       font-family:'n2one','Comic Sans',sans-serif;
       text-transform:lowercase;
@@ -43,11 +44,11 @@
     .envelope-svg {
       width:100%;height:100%;
       pointer-events:none;user-select:none;
-      filter:drop-shadow(2px 2px 4px rgb(255,0,0));
+      filter:drop-shadow(4px 4px 0px #D84040);
     }
     .bubble {
       position:absolute;bottom:50px;
-      border:2px solid #000;background:rgba(255,255,255,1);
+      border:2px solid #000;background:rgba(255, 255, 255, 0);
       pointer-events:none;
       animation:bubblefloat 8s ease-out forwards;
     }
@@ -103,21 +104,22 @@
       position:absolute;top:10px;left:50%;
       transform:translateX(-50%);
       width:30px;height:30px;
-      border:3px solid #000;border-radius:50%;
-      background:#000;
+      border:2px solid #000000;border-radius:50%;
+      filter:drop-shadow(0px 2px 0px #D84040);
+      background:#000000;
     }
     .bomb-fuse {
       position:absolute;top:5px;left:50%;
       transform:translateX(-50%) rotate(-30deg);
-      width:3px;height:15px;background:#ff0000;
-      border-radius:2px;
+      width:2px;height:15px;background:#ff0000;
+      border-radius:20px;
     }
     .bomb-spark {
       position:absolute;top:0;left:50%;
       transform:translateX(-50%);
-      width:5px;height:5px;
-      border:2px solid #000;border-radius:50%;
-      background:transparent;
+      /* width:2px;height:2px; */
+      border:2px solid #ff0000;border-radius:50%;
+      background:#000;
       animation:sparkle .5s infinite alternate;
     }
     @keyframes sparkle {
@@ -193,19 +195,19 @@
   </style>
 </head>
 <body>
-  <div id="rejectiontext">at the bar serving rejection</div>
+  <div id="rejectiontext">today's SPECIAL: rejection</div>
   <button class="start-btn" id="startbtn">start</button>
   <button class="pause-btn" id="pausebtn" style="display:none">pause</button>
   <div class="drink-row" id="drinksrow">
-    <div class="drink" id="glass1" style="--i:0"><svg width="35" height="65"><path d="M6 12 Q7 11 8 12 L10 11 Q12 10 14 11 L16 10 Q18 9 20 10 L22 11 Q24 10 26 11 L28 12 Q29 11 30 12 L27 52 Q26 54 24 53 L22 54 Q20 55 18 54 L16 53 Q14 54 12 53 L10 54 Q8 53 6 52 Z" fill="none" stroke="#000" stroke-width="2"/></svg></div>
-    <div class="drink" id="wine1" style="--i:1"><svg width="32" height="65"><path d="M16 25 Q4 24 5 35 Q4 40 8 42 Q12 44 16 43 Q20 44 24 42 Q28 40 27 35 Q28 24 16 25 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M15 43 Q16 42 17 43 L16 58 Q15 60 17 59 L15 60" fill="none" stroke="#000" stroke-width="2"/><path d="M11 58 Q13 59 15 58 Q17 57 19 58 Q21 59 23 58" fill="none" stroke="#000" stroke-width="2"/></svg></div>
-    <div class="drink" id="beer1" style="--i:2"><svg width="38" height="65"><path d="M9 16 Q10 15 11 16 Q13 14 15 16 Q17 15 19 16 Q21 14 23 16 Q25 15 27 16 L26 47 Q25 49 23 48 Q21 49 19 48 Q17 49 15 48 Q13 47 11 48 Q9 49 10 47 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M13 10 Q14 8 15 10 Q17 9 19 10 Q21 8 22 10 L21 16 Q20 17 19 16 Q17 17 15 16 Q14 17 14 16 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M27 23 Q30 22 32 25 Q33 28 32 31 Q30 34 27 33" fill="none" stroke="#000" stroke-width="2"/></svg></div>
-    <div class="drink" id="bottle1" style="--i:3"><svg width="28" height="65"><path d="M10 6 Q11 5 12 6 Q13 4 15 6 Q16 5 17 6 L16 14 Q17 15 18 14 Q19 13 20 14 Q21 15 20 16 L19 50 Q18 52 16 51 Q14 52 12 51 Q10 52 9 50 L8 16 Q7 15 8 14 Q9 13 10 14 Q11 15 12 14 Z" fill="none" stroke="#000" stroke-width="2"/></svg></div>
-    <div class="drink" id="cocktail1" style="--i:4"><svg width="35" height="65"><path d="M5 15 Q6 14 7 15 Q12 13 17 15 Q22 13 27 15 Q28 14 29 15 L18 35 Q17 36 16 35 Q15 36 14 35 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M16 35 Q17 34 18 35 L17 58 Q16 60 18 59 L16 60" fill="none" stroke="#000" stroke-width="2"/><path d="M13 58 Q15 59 17 58 Q19 57 21 58" fill="none" stroke="#000" stroke-width="2"/></svg></div>
-    <div class="drink" id="glass2" style="--i:5"><svg width="35" height="65"><path d="M7 13 Q8 12 9 13 L11 12 Q13 11 15 12 L17 11 Q19 10 21 11 L23 12 Q25 11 27 12 L29 13 Q30 12 31 13 L28 53 Q27 55 25 54 L23 55 Q21 56 19 55 L17 54 Q15 55 13 54 L11 55 Q9 54 7 53 Z" fill="none" stroke="#000" stroke-width="2"/></svg></div>
-    <div class="drink" id="wine2" style="--i:6"><svg width="32" height="65"><path d="M16 22 Q3 21 4 32 Q3 37 7 39 Q11 41 16 40 Q21 41 25 39 Q29 37 28 32 Q29 21 16 22 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M15 40 Q16 39 17 40 L16 55 Q15 57 17 56 L15 57" fill="none" stroke="#000" stroke-width="2"/><path d="M11 55 Q13 56 15 55 Q17 54 19 55 Q21 56 23 55" fill="none" stroke="#000" stroke-width="2"/></svg></div>
-    <div class="drink" id="beer2" style="--i:7"><svg width="38" height="65"><path d="M8 17 Q9 16 10 17 Q12 15 14 17 Q16 16 18 17 Q20 15 22 17 Q24 16 26 17 L25 48 Q24 50 22 49 Q20 50 18 49 Q16 50 14 49 Q12 48 10 49 Q8 50 9 48 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M12 11 Q13 9 14 11 Q16 10 18 11 Q20 9 21 11 L20 17 Q19 18 18 17 Q16 18 14 17 Q13 18 13 17 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M26 24 Q29 23 31 26 Q32 29 31 32 Q29 35 26 34" fill="none" stroke="#000" stroke-width="2"/></svg></div>
-    <div class="drink" id="bottle2" style="--i:8"><svg width="28" height="65"><path d="M9 7 Q10 6 11 7 Q12 5 14 7 Q15 6 16 7 L15 15 Q16 16 17 15 Q18 14 19 15 Q20 16 19 17 L18 51 Q17 53 15 52 Q13 53 11 52 Q9 53 8 51 L7 17 Q6 16 7 15 Q8 14 9 15 Q10 16 11 15 Z" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="glass1" style="--i:0"><svg width="35" height="65"><path d="M6 12 Q7 11 8 12 L10 11 Q12 10 14 11 L16 10 Q18 9 20 10 L22 11 Q24 10 26 11 L28 12 Q29 11 30 12 L27 52 Q26 54 24 53 L22 54 Q20 55 18 54 L16 53 Q14 54 12 53 L10 54 Q8 53 6 52 Z" fill="#1DCD9F" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="wine1" style="--i:1"><svg width="32" height="65"><path d="M16 25 Q4 24 5 35 Q4 40 8 42 Q12 44 16 43 Q20 44 24 42 Q28 40 27 35 Q28 24 16 25 Z" fill="#DB8DD0" stroke="#000" stroke-width="2"/><path d="M15 43 Q16 42 17 43 L16 58 Q15 60 17 59 L15 60" fill="none" stroke="#000" stroke-width="2"/><path d="M11 58 Q13 59 15 58 Q17 57 19 58 Q21 59 23 58" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="beer1" style="--i:2"><svg width="38" height="65"><path d="M9 16 Q10 15 11 16 Q13 14 15 16 Q17 15 19 16 Q21 14 23 16 Q25 15 27 16 L26 47 Q25 49 23 48 Q21 49 19 48 Q17 49 15 48 Q13 47 11 48 Q9 49 10 47 Z" fill="#FCF259" stroke="#000" stroke-width="2"/><path d="M13 10 Q14 8 15 10 Q17 9 19 10 Q21 8 22 10 L21 16 Q20 17 19 16 Q17 17 15 16 Q14 17 14 16 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M27 23 Q30 22 32 25 Q33 28 32 31 Q30 34 27 33" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="bottle1" style="--i:3"><svg width="28" height="65"><path d="M10 6 Q11 5 12 6 Q13 4 15 6 Q16 5 17 6 L16 14 Q17 15 18 14 Q19 13 20 14 Q21 15 20 16 L19 50 Q18 52 16 51 Q14 52 12 51 Q10 52 9 50 L8 16 Q7 15 8 14 Q9 13 10 14 Q11 15 12 14 Z" fill="#F95454" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="cocktail1" style="--i:4"><svg width="35" height="65"><path d="M5 15 Q6 14 7 15 Q12 13 17 15 Q22 13 27 15 Q28 14 29 15 L18 35 Q17 36 16 35 Q15 36 14 35 Z" fill="#77CDFF" stroke="#000" stroke-width="2"/><path d="M16 35 Q17 34 18 35 L17 58 Q16 60 18 59 L16 60" fill="none" stroke="#000" stroke-width="2"/><path d="M13 58 Q15 59 17 58 Q19 57 21 58" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="glass2" style="--i:5"><svg width="35" height="65"><path d="M7 13 Q8 12 9 13 L11 12 Q13 11 15 12 L17 11 Q19 10 21 11 L23 12 Q25 11 27 12 L29 13 Q30 12 31 13 L28 53 Q27 55 25 54 L23 55 Q21 56 19 55 L17 54 Q15 55 13 54 L11 55 Q9 54 7 53 Z" fill="#B6F500" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="wine2" style="--i:6"><svg width="32" height="65"><path d="M16 22 Q3 21 4 32 Q3 37 7 39 Q11 41 16 40 Q21 41 25 39 Q29 37 28 32 Q29 21 16 22 Z" fill="#FFFADC" stroke="#000" stroke-width="2"/><path d="M15 40 Q16 39 17 40 L16 55 Q15 57 17 56 L15 57" fill="none" stroke="#000" stroke-width="2"/><path d="M11 55 Q13 56 15 55 Q17 54 19 55 Q21 56 23 55" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="beer2" style="--i:7"><svg width="38" height="65"><path d="M8 17 Q9 16 10 17 Q12 15 14 17 Q16 16 18 17 Q20 15 22 17 Q24 16 26 17 L25 48 Q24 50 22 49 Q20 50 18 49 Q16 50 14 49 Q12 48 10 49 Q8 50 9 48 Z" fill="#FFA725" stroke="#000" stroke-width="2"/><path d="M12 11 Q13 9 14 11 Q16 10 18 11 Q20 9 21 11 L20 17 Q19 18 18 17 Q16 18 14 17 Q13 18 13 17 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M26 24 Q29 23 31 26 Q32 29 31 32 Q29 35 26 34" fill="none" stroke="#000" stroke-width="2"/></svg></div>
+    <div class="drink" id="bottle2" style="--i:8"><svg width="28" height="65"><path d="M9 7 Q10 6 11 7 Q12 5 14 7 Q15 6 16 7 L15 15 Q16 16 17 15 Q18 14 19 15 Q20 16 19 17 L18 51 Q17 53 15 52 Q13 53 11 52 Q9 53 8 51 L7 17 Q6 16 7 15 Q8 14 9 15 Q10 16 11 15 Z" fill="#FED2E2" stroke="#000" stroke-width="2"/></svg></div>
   </div>
   <script>
     let bombGhostCount = 0;
@@ -346,7 +348,7 @@
         b.style.setProperty('--explosion-scale-4',4.0+Math.random()*2.0);
         b.classList.add('bomb-explosion');
         playSound('bomb');
-      },300);
+      },150);
       setTimeout(()=>b.remove(),1100);
       updateRejection('add_re');
     }
@@ -462,7 +464,7 @@
         gameEnded=false;running=false;
         document.getElementById('startbtn').style.display='';
         document.getElementById('pausebtn').style.display='none';
-        document.getElementById('rejectiontext').textContent='at the bar serving rejection';
+        document.getElementById('rejectiontext').textContent="today's special: rejection";
       }, 8000);
     }
 
