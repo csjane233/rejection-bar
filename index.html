@@ -97,8 +97,24 @@
       0%   { transform:translateY(0) rotate(0deg);opacity:1; }
       100% { transform:translateY(100vh) rotate(360deg);opacity:0; }
     }
-    .bomb {
+    /* .bomb {
       position:absolute;z-index:200;pointer-events:none;
+    } */
+    .bomb {
+      position: absolute;
+      width: 0;   
+      height: 0;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(1);
+      transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+      opacity: 1;
+    }
+    .bomb-svg {
+      position: absolute;
+      left: -34px;  /* shift by half of svg-width */
+      top:  -38px;  /* shift by half of svg-height */
+      width: 68px;
+      height: 76px;
     }
     .bomb-body {
       position:absolute;top:10px;left:50%;
@@ -130,10 +146,10 @@
     }
     @keyframes explode {
       0%   { transform:scale(1) rotate(0deg);opacity:1; }
-      25%  { transform:scale(var(--explosion-scale-1,1.8)) rotate(180deg);opacity:0.9; }
-      50%  { transform:scale(var(--explosion-scale-2,2.5)) rotate(450deg);opacity:0.7; }
-      75%  { transform:scale(var(--explosion-scale-3,3.5)) rotate(720deg);opacity:0.4; }
-      100% { transform:scale(var(--explosion-scale-4,5)) rotate(1080deg);opacity:0; }
+      25%  { transform:scale(var(--explosion-scale-1,1.2)) rotate(180deg);opacity:1; }
+      50%  { transform:scale(var(--explosion-scale-2,1.5)) rotate(450deg);opacity:0.8; }
+      75%  { transform:scale(var(--explosion-scale-3,1.8)) rotate(720deg);opacity:0.5; }
+      100% { transform:scale(var(--explosion-scale-4,2)) rotate(1080deg);opacity:0; }
     }
     .envelope-vanish {
       animation:vanishinward .8s ease-in forwards;
@@ -192,6 +208,7 @@
       50% { opacity:1; transform:translate(-50%, -50%) scale(1.5) rotate(180deg); }
       100% { opacity:1; transform:translate(-50%, -50%) scale(1) rotate(360deg); }
     }
+    
   </style>
 </head>
 <body>
@@ -209,7 +226,36 @@
     <div class="drink" id="beer2" style="--i:7"><svg width="38" height="65"><path d="M8 17 Q9 16 10 17 Q12 15 14 17 Q16 16 18 17 Q20 15 22 17 Q24 16 26 17 L25 48 Q24 50 22 49 Q20 50 18 49 Q16 50 14 49 Q12 48 10 49 Q8 50 9 48 Z" fill="#FFA725" stroke="#000" stroke-width="2"/><path d="M12 11 Q13 9 14 11 Q16 10 18 11 Q20 9 21 11 L20 17 Q19 18 18 17 Q16 18 14 17 Q13 18 13 17 Z" fill="none" stroke="#000" stroke-width="2"/><path d="M26 24 Q29 23 31 26 Q32 29 31 32 Q29 35 26 34" fill="none" stroke="#000" stroke-width="2"/></svg></div>
     <div class="drink" id="bottle2" style="--i:8"><svg width="28" height="65"><path d="M9 7 Q10 6 11 7 Q12 5 14 7 Q15 6 16 7 L15 15 Q16 16 17 15 Q18 14 19 15 Q20 16 19 17 L18 51 Q17 53 15 52 Q13 53 11 52 Q9 53 8 51 L7 17 Q6 16 7 15 Q8 14 9 15 Q10 16 11 15 Z" fill="#FED2E2" stroke="#000" stroke-width="2"/></svg></div>
   </div>
+  <svg>
+    <defs>
+    <filter id="filter0_dg_1819_185" x="0" y="8" width="68" height="68" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+    <feOffset dy="2"/>
+    <feComposite in2="hardAlpha" operator="out"/>
+    <feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0"/>
+    <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1819_185"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1819_185" result="shape"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.27777779102325439 0.27777779102325439" numOctaves="3" seed="8544"/>
+    <feDisplacementMap in="shape" scale="4" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%"/>
+    <feMerge result="effect2_texture_1819_185">
+    <feMergeNode in="displacedImage"/>
+    </feMerge>
+    </filter>
+    <filter id="filter1_g_1819_185" x="30" y="0" width="6" height="19" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+    <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+    <feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+    <feTurbulence type="fractalNoise" baseFrequency="0.25 0.25" numOctaves="3" seed="4547"/>
+    <feDisplacementMap in="shape" scale="4" xChannelSelector="R" yChannelSelector="G" result="displacedImage" width="100%" height="100%"/>
+    <feMerge result="effect1_texture_1819_185">
+    <feMergeNode in="displacedImage"/>
+    </feMerge>
+    </filter>
+    </defs>
+  </svg>
+
   <script>
+    
     let bombGhostCount = 0;
     let running=false, paused=false, spawnEnv, spawnBub, gameEnded=false;
     const envelopeShapes=[{w:85,h:55},{w:70,h:70},{w:105,h:45},{w:45,h:85},{w:55,h:40},{w:95,h:70}];
@@ -336,20 +382,29 @@
       const b=document.createElement('div');b.className='bomb';
       b.style.left=x+'px';b.style.top=y+'px';
       const fuseRot=-30+(Math.random()-0.5)*20, sparkOff=(Math.random()-0.5)*6;
-      b.innerHTML=`
-        <div class="bomb-body"></div>
-        <div class="bomb-fuse" style="transform:translateX(-50%) rotate(${fuseRot}deg)"></div>
-        <div class="bomb-spark" style="left:calc(50%+${sparkOff}px)"></div>`;
+
+      b.innerHTML = `
+        <svg class="bomb-svg" width="68" height="76" viewBox="0 0 68 76">
+          <g filter="url(#filter0_dg_1819_185)">
+            <circle cx="34" cy="42" r="32" fill="black"/>
+          </g>
+          <g filter="url(#filter1_g_1819_185)">
+            <rect x="32" y="2" width="2" height="15" rx="1" fill="#FF0000"/>
+          </g>
+        </svg>
+      `;
       document.body.appendChild(b);
       setTimeout(()=>{
-        b.style.setProperty('--explosion-scale-1',1.5+Math.random()*0.8);
-        b.style.setProperty('--explosion-scale-2',2.0+Math.random()*1.0);
-        b.style.setProperty('--explosion-scale-3',2.8+Math.random()*1.4);
-        b.style.setProperty('--explosion-scale-4',4.0+Math.random()*2.0);
+        b.style.setProperty('--explosion-scale-1',1.0+Math.random()*0.8);
+        b.style.setProperty('--explosion-scale-2',1.2+Math.random()*1.0);
+        b.style.setProperty('--explosion-scale-3',1.5+Math.random()*1.0);
+        b.style.setProperty('--explosion-scale-4',1.8+Math.random()*1.2);
         b.classList.add('bomb-explosion');
+        // b.style.transform = 'translate(-50%,-50%) scale(3)';
+        // b.style.opacity = '0';
         playSound('bomb');
-      },150);
-      setTimeout(()=>b.remove(),1100);
+      }, 20);
+      setTimeout(()=>b.remove(),1000);
       updateRejection('add_re');
     }
 
